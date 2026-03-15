@@ -8,9 +8,9 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const testimonials = [
-  { name: "Emma S.", from: "London, UK", text: "The apartment in Westlands was absolutely stunning. Better than any hotel I've stayed at in Nairobi!", rating: 5 },
-  { name: "Michael R.", from: "New York, US", text: "Seamless booking experience and the Karen villa exceeded all expectations. Will definitely return.", rating: 5 },
-  { name: "Fatima A.", from: "Dubai, UAE", text: "The host was incredibly welcoming. The Kilimani penthouse views are unforgettable.", rating: 5 },
+  { name: "Emma S.", from: "London, UK", text: "Abdifatah was an amazing host — the Westlands apartment was spotless and better than any hotel in Nairobi!", rating: 5 },
+  { name: "Michael R.", from: "New York, US", text: "Abdifatah responded instantly and the Karen villa exceeded all expectations. Will definitely return.", rating: 5 },
+  { name: "Fatima A.", from: "Dubai, UAE", text: "Shoutout to Abdifatah for the warm welcome. The Kilimani penthouse views are absolutely unforgettable.", rating: 5 },
 ];
 
 export default function HomePage() {

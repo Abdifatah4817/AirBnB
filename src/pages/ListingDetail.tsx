@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { listings } from "@/data/listings";
-import { Star, Shield, MapPin, Users, Bed, Bath, Wifi, Car, Dumbbell, TreePine, ChevronLeft, Heart, Share2 } from "lucide-react";
+import { Star, Shield, MapPin, Users, Bed, Bath, Wifi, Car, Dumbbell, TreePine, ChevronLeft, Heart, Share2, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -141,6 +141,12 @@ export default function ListingDetail() {
               <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-12 text-base font-semibold">
                 Reserve
               </Button>
+
+              <a href="tel:+254712345678" className="block mt-3">
+                <Button variant="outline" className="w-full h-11 text-sm font-medium gap-2">
+                  <Phone className="w-4 h-4" /> Call Abdifatah
+                </Button>
+              </a>
 
               <p className="text-center text-xs text-muted-foreground mt-3">You won't be charged yet</p>
 
