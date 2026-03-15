@@ -142,7 +142,7 @@ export default function ListingDetail() {
                 Reserve
               </Button>
 
-              <a href="tel:+254712345678" className="block mt-3">
+              <a href="tel:+254740531856" className="block mt-3">
                 <Button variant="outline" className="w-full h-11 text-sm font-medium gap-2">
                   <Phone className="w-4 h-4" /> Call Abdifatah
                 </Button>

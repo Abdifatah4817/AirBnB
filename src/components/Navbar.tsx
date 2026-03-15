@@ -37,10 +37,10 @@ export default function Navbar() {
 
         <div className="hidden md:flex items-center gap-3">
           <a
-            href="tel:+254712345678"
+            href="tel:+254740531856"
             className="flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
           >
-            <Phone className="w-4 h-4" /> +254 712 345 678
+            <Phone className="w-4 h-4" /> +254 740 531 856
           </a>
           <Button variant="ghost" size="sm" className="text-muted-foreground">
             Become a Host
