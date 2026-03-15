@@ -1,0 +1,124 @@
+// Prisma Schema — NairobiStay
+// Run: npx prisma migrate dev --name init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  guest
+  host
+  admin
+}
+
+enum BookingStatus {
+  pending
+  confirmed
+  cancelled
+  completed
+}
+
+enum PaymentStatus {
+  pending
+  paid
+  refunded
+  failed
+}
+
+enum PaymentMethod {
+  mpesa
+  card
+  bank_transfer
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      UserRole @default(guest)
+  phone     String?
+  avatar    String?
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  properties Property[]
+  bookings   Booking[]  @relation("GuestBookings")
+  reviews    Review[]
+}
+
+model Property {
+  id            String   @id @default(cuid())
+  title         String
+  description   String
+  pricePerNight Int
+  neighborhood  String
+  location      String
+  images        String[]
+  bedrooms      Int
+  bathrooms     Int
+  maxGuests     Int
+  amenities     String[]
+  type          String   @default("entire")
+  lat           Float?
+  lng           Float?
+  isActive      Boolean  @default(true)
+  hostId        String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  host     User      @relation(fields: [hostId], references: [id])
+  bookings Booking[]
+  reviews  Review[]
+}
+
+model Booking {
+  id          String        @id @default(cuid())
+  propertyId  String
+  guestId     String
+  checkIn     DateTime
+  checkOut    DateTime
+  guestsCount Int
+  totalPrice  Int
+  status      BookingStatus @default(pending)
+  specialReqs String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  property Property @relation(fields: [propertyId], references: [id])
+  guest    User     @relation("GuestBookings", fields: [guestId], references: [id])
+  review   Review?
+  payment  Payment?
+}
+
+model Review {
+  id         String   @id @default(cuid())
+  bookingId  String   @unique
+  propertyId String
+  authorId   String
+  rating     Int
+  comment    String
+  createdAt  DateTime @default(now())
+
+  booking  Booking  @relation(fields: [bookingId], references: [id])
+  property Property @relation(fields: [propertyId], references: [id])
+  author   User     @relation(fields: [authorId], references: [id])
+}
+
+model Payment {
+  id        String        @id @default(cuid())
+  bookingId String        @unique
+  amount    Int
+  method    PaymentMethod
+  status    PaymentStatus @default(pending)
+  reference String?
+  createdAt DateTime      @default(now())
+
+  booking Booking @relation(fields: [bookingId], references: [id])
+}

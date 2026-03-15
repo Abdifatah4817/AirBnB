@@ -5,6 +5,15 @@ import listing4 from "@/assets/listing-4.jpg";
 import listing5 from "@/assets/listing-5.jpg";
 import listing6 from "@/assets/listing-6.jpg";
 
+export interface Review {
+  id: string;
+  author: string;
+  avatar: string;
+  rating: number;
+  date: string;
+  comment: string;
+}
+
 export interface Listing {
   id: string;
   title: string;
@@ -18,15 +27,11 @@ export interface Listing {
   bathrooms: number;
   amenities: string[];
   images: string[];
-  host: {
-    name: string;
-    avatar: string;
-    verified: boolean;
-    superhost: boolean;
-  };
+  host: { name: string; avatar: string; verified: boolean; superhost: boolean; joined: string };
   type: "entire" | "private" | "shared";
   lat: number;
   lng: number;
+  reviewsList: Review[];
 }
 
 export const neighborhoods = [
@@ -50,11 +55,16 @@ export const listings: Listing[] = [
     bedrooms: 2,
     bathrooms: 2,
     amenities: ["WiFi", "Pool", "Parking", "Security", "Gym", "Balcony"],
-    images: [listing1],
-    host: { name: "Amina W.", avatar: "", verified: true, superhost: true },
+    images: [listing1, listing2, listing3],
+    host: { name: "Abdifatah", avatar: "", verified: true, superhost: true, joined: "January 2022" },
     type: "entire",
     lat: -1.2635,
     lng: 36.8023,
+    reviewsList: [
+      { id: "r1", author: "Emma S.", avatar: "", rating: 5, date: "March 2025", comment: "Abdifatah was an amazing host — the apartment was spotless and better than any hotel in Nairobi!" },
+      { id: "r2", author: "Michael R.", avatar: "", rating: 5, date: "February 2025", comment: "Abdifatah responded instantly to every message. The views from the balcony are incredible." },
+      { id: "r3", author: "Fatima A.", avatar: "", rating: 5, date: "January 2025", comment: "Shoutout to Abdifatah for the warm welcome. Highly recommend this place!" },
+    ],
   },
   {
     id: "karen-garden-villa",
@@ -68,11 +78,15 @@ export const listings: Listing[] = [
     bedrooms: 3,
     bathrooms: 3,
     amenities: ["WiFi", "Pool", "Parking", "Security", "Garden", "BBQ"],
-    images: [listing2],
-    host: { name: "David K.", avatar: "", verified: true, superhost: true },
+    images: [listing2, listing3, listing4],
+    host: { name: "Abdifatah", avatar: "", verified: true, superhost: true, joined: "January 2022" },
     type: "entire",
     lat: -1.3186,
     lng: 36.7111,
+    reviewsList: [
+      { id: "r4", author: "David K.", avatar: "", rating: 5, date: "March 2025", comment: "Abdifatah's villa in Karen is absolutely breathtaking. The garden is a paradise." },
+      { id: "r5", author: "Sarah O.", avatar: "", rating: 5, date: "February 2025", comment: "Perfect family getaway. Abdifatah made sure everything was ready before we arrived." },
+    ],
   },
   {
     id: "kilimani-penthouse",
@@ -86,11 +100,15 @@ export const listings: Listing[] = [
     bedrooms: 1,
     bathrooms: 1,
     amenities: ["WiFi", "Parking", "Security", "Rooftop", "City View"],
-    images: [listing3],
-    host: { name: "Grace M.", avatar: "", verified: true, superhost: false },
+    images: [listing3, listing1, listing5],
+    host: { name: "Abdifatah", avatar: "", verified: true, superhost: false, joined: "January 2022" },
     type: "entire",
     lat: -1.2886,
     lng: 36.7857,
+    reviewsList: [
+      { id: "r6", author: "Grace M.", avatar: "", rating: 5, date: "March 2025", comment: "The rooftop views are unforgettable. Abdifatah was super helpful throughout our stay." },
+      { id: "r7", author: "James T.", avatar: "", rating: 4, date: "January 2025", comment: "Great location and beautiful penthouse. Would definitely book again through Abdifatah." },
+    ],
   },
   {
     id: "kilimani-cozy-studio",
@@ -104,11 +122,15 @@ export const listings: Listing[] = [
     bedrooms: 1,
     bathrooms: 1,
     amenities: ["WiFi", "Security", "City View", "Workspace"],
-    images: [listing4],
-    host: { name: "Peter N.", avatar: "", verified: true, superhost: true },
+    images: [listing4, listing2, listing6],
+    host: { name: "Abdifatah", avatar: "", verified: true, superhost: true, joined: "January 2022" },
     type: "entire",
     lat: -1.2905,
     lng: 36.7820,
+    reviewsList: [
+      { id: "r8", author: "Peter N.", avatar: "", rating: 5, date: "March 2025", comment: "Best value in Nairobi! Abdifatah's studio is cozy, clean, and perfectly located." },
+      { id: "r9", author: "Amina W.", avatar: "", rating: 5, date: "February 2025", comment: "Abdifatah was incredibly responsive. The workspace setup was perfect for my work trip." },
+    ],
   },
   {
     id: "lavington-furnished-apartment",
@@ -122,11 +144,14 @@ export const listings: Listing[] = [
     bedrooms: 2,
     bathrooms: 2,
     amenities: ["WiFi", "Parking", "Security", "Gym", "Workspace", "Laundry"],
-    images: [listing5],
-    host: { name: "Sarah O.", avatar: "", verified: true, superhost: false },
+    images: [listing5, listing1, listing3],
+    host: { name: "Abdifatah", avatar: "", verified: true, superhost: false, joined: "January 2022" },
     type: "entire",
     lat: -1.2780,
     lng: 36.7695,
+    reviewsList: [
+      { id: "r10", author: "Lucy W.", avatar: "", rating: 5, date: "March 2025", comment: "Abdifatah's Lavington apartment is a hidden gem. Quiet, spacious, and beautifully furnished." },
+    ],
   },
   {
     id: "cbd-panoramic-apartment",
@@ -140,10 +165,14 @@ export const listings: Listing[] = [
     bedrooms: 1,
     bathrooms: 1,
     amenities: ["WiFi", "Security", "City View", "Elevator", "24h Reception"],
-    images: [listing6],
-    host: { name: "James T.", avatar: "", verified: false, superhost: false },
+    images: [listing6, listing4, listing2],
+    host: { name: "Abdifatah", avatar: "", verified: false, superhost: false, joined: "January 2022" },
     type: "entire",
     lat: -1.2864,
     lng: 36.8172,
+    reviewsList: [
+      { id: "r11", author: "Tom B.", avatar: "", rating: 5, date: "February 2025", comment: "Perfect location in the CBD. Abdifatah made check-in super easy." },
+      { id: "r12", author: "Zara K.", avatar: "", rating: 4, date: "January 2025", comment: "Great views and very affordable. Abdifatah was always available when needed." },
+    ],
   },
 ];
