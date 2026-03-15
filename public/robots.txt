@@ -1,0 +1,14 @@
+# robots.txt for AirBnB Clone
+# https://www.robotstxt.org/robotstxt.html
+
+User-agent: *
+Allow: /
+Allow: /explore
+Allow: /about
+
+Disallow: /admin
+Disallow: /api/
+Disallow: /private/
+
+# Sitemap
+Sitemap: https://yourdomain.com/sitemap.xml
