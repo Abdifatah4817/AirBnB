@@ -1,6 +1,3 @@
-// Prisma Schema — NairobiStay
-// Run: npx prisma migrate dev --name init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum UserRole {
+enum Role {
   guest
   host
   admin
@@ -30,57 +27,63 @@ enum PaymentStatus {
   failed
 }
 
-enum PaymentMethod {
-  mpesa
-  card
-  bank_transfer
-}
-
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  password  String
-  role      UserRole @default(guest)
-  phone     String?
-  avatar    String?
-  verified  Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String    @id @default(cuid())
+  name           String
+  email          String    @unique
+  hashedPassword String?
+  image          String?
+  phone          String?
+  role           Role      @default(guest)
+  emailVerified  Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
-  properties Property[]
-  bookings   Booking[]  @relation("GuestBookings")
-  reviews    Review[]
+  listings  Listing[]
+  bookings  Booking[]
+  reviews   Review[]
+  sessions  Session[]
 }
 
-model Property {
-  id            String   @id @default(cuid())
-  title         String
-  description   String
-  pricePerNight Int
-  neighborhood  String
-  location      String
-  images        String[]
-  bedrooms      Int
-  bathrooms     Int
-  maxGuests     Int
-  amenities     String[]
-  type          String   @default("entire")
-  lat           Float?
-  lng           Float?
-  isActive      Boolean  @default(true)
-  hostId        String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 
-  host     User      @relation(fields: [hostId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Listing {
+  id           String   @id @default(cuid())
+  title        String
+  description  String
+  pricePerNight Int
+  neighborhood String
+  location     String
+  images       String[]
+  bedrooms     Int      @default(1)
+  bathrooms    Int      @default(1)
+  maxGuests    Int      @default(2)
+  amenities    String[]
+  type         String   @default("entire")
+  lat          Float?
+  lng          Float?
+  isActive     Boolean  @default(true)
+  rating       Float    @default(0)
+  hostId       String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  host     User      @relation(fields: [hostId], references: [id], onDelete: Cascade)
   bookings Booking[]
   reviews  Review[]
 }
 
 model Booking {
   id          String        @id @default(cuid())
-  propertyId  String
+  listingId   String
   guestId     String
   checkIn     DateTime
   checkOut    DateTime
@@ -91,34 +94,34 @@ model Booking {
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 
-  property Property @relation(fields: [propertyId], references: [id])
-  guest    User     @relation("GuestBookings", fields: [guestId], references: [id])
-  review   Review?
-  payment  Payment?
+  listing Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  guest   User     @relation(fields: [guestId], references: [id], onDelete: Cascade)
+  review  Review?
+  payment Payment?
 }
 
 model Review {
-  id         String   @id @default(cuid())
-  bookingId  String   @unique
-  propertyId String
-  authorId   String
-  rating     Int
-  comment    String
-  createdAt  DateTime @default(now())
+  id        String   @id @default(cuid())
+  bookingId String   @unique
+  listingId String
+  authorId  String
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())
 
-  booking  Booking  @relation(fields: [bookingId], references: [id])
-  property Property @relation(fields: [propertyId], references: [id])
-  author   User     @relation(fields: [authorId], references: [id])
+  booking Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  author  User    @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }
 
 model Payment {
   id        String        @id @default(cuid())
   bookingId String        @unique
   amount    Int
-  method    PaymentMethod
+  method    String
   status    PaymentStatus @default(pending)
   reference String?
   createdAt DateTime      @default(now())
 
-  booking Booking @relation(fields: [bookingId], references: [id])
+  booking Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
 }
